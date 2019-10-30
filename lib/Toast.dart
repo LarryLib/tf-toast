@@ -30,9 +30,8 @@ class Toast {
     TextStyle subTitleStyle,
     String imgResource,
     double duration,
-    bool loadingUseIndicator = false,
+    ToastShowType type, //    ToastShowType.loading
   }) async {
-    print('duration === ${duration}');
     _setShowState(true, duration: duration ?? 2.5);
 
     if (_overlayEntry != null) {
@@ -40,17 +39,15 @@ class Toast {
       _overlayEntry = null;
     }
 
+    var toast = sToastConfig.getDefaultToastData(type);
+
     _overlayEntry = _createOverlayEntry(
-      loadingUseIndicator,
-      ToastData(
-        backgroundColor,
-        title,
-        titleStyle,
-        subTitle,
-        subTitleStyle,
-        imgResource,
-        duration ?? 2.5,
-      ),
+      backgroundColor: backgroundColor ?? toast.backgroundColor,
+      title: title ?? toast.title,
+      titleStyle: titleStyle ?? toast.titleStyle,
+      subTitle: subTitle ?? toast.subTitle,
+      subTitleStyle: subTitleStyle ?? toast.subTitleStyle,
+      img: _hudImg(imgResource, type),
     );
     Overlay.of(context).insert(_overlayEntry);
   }
@@ -75,7 +72,7 @@ class Toast {
       subTitleStyle: subTitleStyle ?? toast.subTitleStyle,
       imgResource: imgResource ?? toast.imgResource,
       duration: duration ?? toast.duration,
-      loadingUseIndicator: true,
+      type: ToastShowType.loading,
     );
   }
 
@@ -99,7 +96,7 @@ class Toast {
       subTitleStyle: subTitleStyle ?? toast.subTitleStyle,
       imgResource: imgResource ?? toast.imgResource,
       duration: duration ?? toast.duration,
-      loadingUseIndicator: false,
+      type: ToastShowType.fail,
     );
   }
 
@@ -123,27 +120,33 @@ class Toast {
       subTitleStyle: subTitleStyle ?? toast.subTitleStyle,
       imgResource: imgResource ?? toast.imgResource,
       duration: duration ?? toast.duration,
-      loadingUseIndicator: false,
+      type: ToastShowType.success,
     );
   }
 
-  static OverlayEntry _createOverlayEntry(bool loadingUseIndicator, ToastData toastData) {
+  static OverlayEntry _createOverlayEntry({
+    Color backgroundColor,
+    String title,
+    TextStyle titleStyle,
+    String subTitle,
+    TextStyle subTitleStyle,
+    Widget img,
+  }) {
     return OverlayEntry(
       builder: (context) {
         var width = MediaQuery.of(context).size.width;
         var height = MediaQuery.of(context).size.height;
 
-        var b1 = loadingUseIndicator ||
-            (toastData.imgResource != null && toastData.imgResource.length > 0);
-        var b2 = toastData.title != null && toastData.title.length > 0;
-        var b3 = toastData.subTitle != null && toastData.subTitle.length > 0;
+        var img_b = img != null;
+        var title_b = title != null && title.length > 0;
+        var subTitle_b = subTitle != null && subTitle.length > 0;
 
         //  内容
         final titleTextPainter = TextPainter(
           textDirection: TextDirection.ltr,
           text: TextSpan(
-            text: toastData.title ?? '',
-            style: toastData.titleStyle ?? null,
+            text: title ?? '',
+            style: titleStyle ?? null,
           ),
         );
         titleTextPainter.layout();
@@ -151,8 +154,8 @@ class Toast {
         final subTitleTextPainter = TextPainter(
           textDirection: TextDirection.ltr,
           text: TextSpan(
-            text: toastData.subTitle ?? '',
-            style: toastData.subTitleStyle ?? null,
+            text: subTitle ?? '',
+            style: subTitleStyle ?? null,
           ),
         );
         subTitleTextPainter.layout();
@@ -164,18 +167,18 @@ class Toast {
             : subTitleTextPainter.width + 2 * textHorizontal;
         var contentHeight = titleTextPainter.height +
             subTitleTextPainter.height +
-            ((b1 && (b2 || b3)) ? 60 : 0) +
-            (b2 ? textVertical : 0) +
-            (b3 ? textVertical : 0);
+            ((img_b && (title_b || subTitle_b)) ? 60 : 0) +
+            (title_b ? textVertical : 0) +
+            (subTitle_b ? textVertical : 0);
 
-        //  极限尺寸(暂不提到ToastConfig)
+        //  极限尺寸("最小"暂不提到ToastConfig)
         var minWidth = 80.0;
         var minHeight = 80.0;
         var maxWidth = width * sToastConfig.widthRatio;
         var maxHeight = width * sToastConfig.heightRatio;
 
         //  调整最小宽度
-        if (b1 && (b2 || b3)) minWidth *= 2.0;
+        if (img_b && (title_b || subTitle_b)) minWidth *= 2.0;
 
         if (contentWidth < minWidth) contentWidth = minWidth;
         if (contentWidth > maxWidth) contentWidth = maxWidth;
@@ -197,7 +200,7 @@ class Toast {
             height: height,
             color: sToastConfig.backgroundColor,
             child: Card(
-              color: toastData.backgroundColor ?? Colors.transparent,
+              color: backgroundColor ?? Colors.transparent,
               margin: margin,
               clipBehavior: Clip.hardEdge,
               shape: RoundedRectangleBorder(
@@ -211,19 +214,13 @@ class Toast {
                 ),
                 child: Wrap(
                   children: <Widget>[
-                    if (b1)
+                    if (img_b)
                       Container(
                         alignment: Alignment.center,
                         height: sToastConfig.imgWidth,
-                        child: (loadingUseIndicator)
-                            ? CupertinoActivityIndicator(radius: 18.0)
-                            : Image.asset(
-                                toastData.imgResource,
-                                width: sToastConfig.imgWidth * 0.5,
-                                height: sToastConfig.imgWidth * 0.5,
-                              ),
+                        child: img,
                       ),
-                    if (b2)
+                    if (title_b)
                       Container(
                         alignment: Alignment.center,
                         padding: EdgeInsets.only(
@@ -233,12 +230,12 @@ class Toast {
                           bottom: textVertical * 0.5,
                         ),
                         child: Text(
-                          toastData.title,
+                          title,
                           textAlign: TextAlign.center,
-                          style: toastData.titleStyle ?? null,
+                          style: titleStyle ?? null,
                         ),
                       ),
-                    if (b3)
+                    if (subTitle_b)
                       Container(
                         alignment: Alignment.center,
                         padding: EdgeInsets.only(
@@ -248,10 +245,10 @@ class Toast {
                           bottom: textVertical * 0.5,
                         ),
                         child: Text(
-                          toastData.subTitle,
+                          subTitle,
                           maxLines: 3,
                           textAlign: TextAlign.center,
-                          style: toastData.subTitleStyle ?? null,
+                          style: subTitleStyle ?? null,
                         ),
                       ),
                   ],
@@ -262,6 +259,39 @@ class Toast {
         );
       },
     );
+  }
+
+  static Widget _hudImg(String imgResource, ToastShowType type) {
+    if (imgResource != null && imgResource.length > 0) {
+      return Image.asset(
+        imgResource,
+        width: sToastConfig.imgWidth * 0.5,
+        height: sToastConfig.imgWidth * 0.5,
+      );
+    } else if (type != null) {
+      switch (type) {
+        case ToastShowType.loading:
+          return CupertinoActivityIndicator(radius: 18.0);
+          break;
+        case ToastShowType.fail:
+          return Icon(
+            Icons.close,
+            color: Colors.white,
+            size: 45.0,
+          );
+          break;
+        case ToastShowType.success:
+          return Icon(
+            Icons.check,
+            color: Colors.white,
+            size: 45.0,
+          );
+          break;
+        default:
+          break;
+      }
+    }
+    return null;
   }
 
   static void dismiss() async {

@@ -1,6 +1,6 @@
 name: tf_toast
 description: A new Flutter project.
-version: 0.1.0
+version: 0.2.0
 author: larry<lxd_super_main@126.com>
 homepage: https://github.com/lxd-Super-main/tf-toast
 
@@ -24,12 +24,9 @@ flutter:
   # The androidPackage and pluginClass identifiers should not ordinarily
   # be modified. They are used by the tooling to maintain consistency when
   # adding or updating assets for this project.
-  plugin:
-    androidPackage: com.example.tf_toast
-    pluginClass: TfToastPlugin
-
-  assets:
-    - images/
+  #  plugin:
+  #    androidPackage: com.example.tf_toast
+  #    pluginClass: TfToastPlugin
 
   #
   # For details regarding assets in packages, see

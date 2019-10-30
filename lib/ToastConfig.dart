@@ -100,15 +100,9 @@ class ToastConfig {
   //  提示框：默认支持 list
   Map<ToastShowType, ToastData> _defaultList = {
     ToastShowType.normal: ToastData.shared,
-    ToastShowType.loading: ToastData.shared.clone(
-      duration: 0,
-    ),
-    ToastShowType.fail: ToastData.shared.clone(
-      imgResource: 'images/fail.png',
-    ),
-    ToastShowType.success: ToastData.shared.clone(
-      imgResource: 'images/success.png',
-    ),
+    ToastShowType.loading: ToastData.shared.clone(duration: 0),
+    ToastShowType.fail: ToastData.shared,
+    ToastShowType.success: ToastData.shared,
   };
 
   setDefaultList(ToastShowType type, ToastData value) =>

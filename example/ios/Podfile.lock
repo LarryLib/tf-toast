@@ -1,21 +1,15 @@
 PODS:
   - Flutter (1.0.0)
-  - tf_toast (0.0.1):
-    - Flutter
 
 DEPENDENCIES:
   - Flutter (from `.symlinks/flutter/ios`)
-  - tf_toast (from `.symlinks/plugins/tf_toast/ios`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: ".symlinks/flutter/ios"
-  tf_toast:
-    :path: ".symlinks/plugins/tf_toast/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  tf_toast: 10ac9b424626d7a59eb4e8bf4c565ec404a83305
 
 PODFILE CHECKSUM: b6a0a141693093b304368d08511b46cf3d1d0ac5
 
