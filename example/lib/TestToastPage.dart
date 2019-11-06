@@ -18,10 +18,12 @@ class _TestToastPageState extends State<TestToastPage> {
   var index = 0;
 
   setIndex(int value) {
-    setState(() {
-      index = value;
-    });
+    setState(() => index = value);
   }
+
+  var imgResource = 'images/test.png';
+  var title = 'title:titletitletitletitletitletitletitletitletitle';
+  var subTitle = 'subTitle:subTitlesubTitlesubTitlesubTitlesubTitlesubTitle';
 
   @override
   void initState() {
@@ -67,7 +69,7 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('img'),
             onPressed: () {
               show(
-                imgResource: 'images/test.png',
+                imgResource: imgResource,
               );
             },
           ),
@@ -75,7 +77,7 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('title'),
             onPressed: () {
               show(
-                title: 'title',
+                title: title,
               );
             },
           ),
@@ -83,7 +85,7 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('subTitle'),
             onPressed: () {
               show(
-                subTitle: 'subTitle',
+                subTitle: subTitle,
               );
             },
           ),
@@ -91,8 +93,8 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('img-title'),
             onPressed: () {
               show(
-                imgResource: 'images/test.png',
-                title: 'title',
+                imgResource: imgResource,
+                title: title,
               );
             },
           ),
@@ -100,8 +102,8 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('img-subtitle'),
             onPressed: () {
               show(
-                imgResource: 'images/test.png',
-                subTitle: 'subtitle',
+                imgResource: imgResource,
+                subTitle: subTitle,
               );
             },
           ),
@@ -109,8 +111,8 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('title-subtitle'),
             onPressed: () {
               show(
-                title: 'title',
-                subTitle: 'subTitle',
+                title: title,
+                subTitle: subTitle,
               );
             },
           ),
@@ -118,9 +120,9 @@ class _TestToastPageState extends State<TestToastPage> {
             child: Text('img-title-subtitle'),
             onPressed: () {
               show(
-                imgResource: 'images/test.png',
-                title: 'title',
-                subTitle: 'subTitle',
+                imgResource: imgResource,
+                title: title,
+                subTitle: subTitle,
               );
             },
           ),
