@@ -1,3 +1,6 @@
+## 0.3.0
+- Determine the widget size based on the content 
+
 ## 0.2.0
 - fix 
 
