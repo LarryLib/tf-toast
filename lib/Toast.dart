@@ -165,8 +165,10 @@ class Toast {
         var contentWidth = titleTextPainter.width > subTitleTextPainter.width
             ? titleTextPainter.width + 2 * textHorizontal
             : subTitleTextPainter.width + 2 * textHorizontal;
-        var contentHeight = titleTextPainter.height +
-            subTitleTextPainter.height +
+        var contentHeight = titleTextPainter.height *
+                (titleTextPainter.width / contentWidth + 1) +
+            subTitleTextPainter.height *
+                (subTitleTextPainter.width / contentWidth + 1) +
             ((img_b && (title_b || subTitle_b)) ? 60 : 0) +
             (title_b ? textVertical : 0) +
             (subTitle_b ? textVertical : 0);
