@@ -1,3 +1,6 @@
+## 0.4.0
+- fix toast.backgroundColor = black; title.color = white; subTitle.color = white
+
 ## 0.3.0
 - Determine the widget size based on the content 
 

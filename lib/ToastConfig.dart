@@ -28,11 +28,11 @@ class ToastData {
   }
 
   static final shared = ToastData(
-    Colors.black12,
+    Colors.black,
     null,
-    TextStyle(fontSize: 18),
+    TextStyle(fontSize: 18, color: Colors.white),
     null,
-    TextStyle(fontSize: 12),
+    TextStyle(fontSize: 12, color: Colors.white),
     '',
     2.5,
   );
